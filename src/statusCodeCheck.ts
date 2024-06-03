@@ -1,19 +1,19 @@
 
-const puppeteer = require('puppeteer');
-const assert = require('node:assert');
+import puppeteer from 'puppeteer';
+import assert from 'node:assert';
 
 
-async function foo() {
+export default async function statusCodeCheck(url: string, statusCode: number) {
 
     // Launch a headless Chrome browser and open a new page
-    const browser = await puppeteer.launch({ headless: 'new', timeout: 0 });
+    const browser = await puppeteer.launch({ headless: true, timeout: 0 });
     const page = await browser.newPage();
 
     // Navigate to the target URL
-    const result = await page.goto('https://www.example.com', { waitUntil: 'load' });
+    const result = await page.goto(url, { waitUntil: 'load' });
 
     // Confirm successful navigation
-    await assert.equal(result.status(), 200);
+    await assert.equal(result.status(), statusCode);
 
     // Print the page title to the console
     const title = await page.title();
@@ -23,4 +23,3 @@ async function foo() {
     await browser.close();
 }
 
-foo();
